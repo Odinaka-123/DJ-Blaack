@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+:root {
+  --font-display: "Cinzel Decorative", serif;
+  --font-body: "Raleway", sans-serif;
+  --font-mono: "Space Mono", monospace;
+
+  --gold-300: #ffd580;
+  --gold-400: #ffc845;
+  --gold-500: #f5a623;
+  --gold-600: #d4861a;
+
+  --bg-dark: #0a0608;
+  --bg-mid: #120c10;
+  --bg-accent: #1c1018;
+
+  --text-primary: #f8f0e8;
+  --text-muted: #8a7070;
+
+  scroll-behavior: smooth;
+}
+
+html {
+  font-family: var(--font-body);
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg-dark);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold-600);
+  border-radius: 2px;
+}
+
+/* Selection */
+::selection {
+  background: rgba(245, 166, 35, 0.3);
+  color: var(--gold-300);
+}
+
+/* Gold shimmer */
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--gold-600),
+    var(--gold-300),
+    #fff8e1,
+    var(--gold-300),
+    var(--gold-600)
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Glow */
+.glow-gold {
+  box-shadow: 0 0 40px rgba(245, 166, 35, 0.25);
+}
+
+/* Reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: 0.8s;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
