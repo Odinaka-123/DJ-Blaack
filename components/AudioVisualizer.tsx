@@ -8,9 +8,6 @@ export default function AudioVisualizer() {
   const [active, setActive] = useState(false);
   const barCount = 20;
 
-  // Use state initializer to generate random values once on mount.
-  // This satisfies the purity rule because the logic is encapsulated
-  // within the state initialization, not the render body.
   const [visualData] = useState(() => {
     const heights = Array.from({ length: barCount }, () => [
       4 + Math.random() * 20,
