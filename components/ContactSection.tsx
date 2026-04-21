@@ -46,7 +46,7 @@ function EventDropdown({
 
   return (
     <div ref={ref} className="relative">
-      {/* Trigger button */}
+      {/* Trigger */}
       <button
         type="button"
         disabled={disabled}
@@ -59,7 +59,7 @@ function EventDropdown({
           boxShadow: open ? "0 0 0 3px rgba(245,166,35,0.07)" : "none",
         }}
       >
-        <span className="flex items-center gap-2.5">
+        <span className="flex items-center gap-2.5 min-w-0">
           {selected ?
             <>
               <span
@@ -71,13 +71,14 @@ function EventDropdown({
               >
                 {selected.icon}
               </span>
-              <span>{selected.label}</span>
+              <span className="truncate">{selected.label}</span>
             </>
           : <span className="text-[#3A2A3A]">Select event type</span>}
         </span>
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.2 }}
+          className="shrink-0 ml-2"
         >
           <LuChevronDown size={15} style={{ color: "#F5A623", opacity: 0.6 }} />
         </motion.span>
@@ -110,7 +111,7 @@ function EventDropdown({
                       onChange(opt.value);
                       setOpen(false);
                     }}
-                    className="w-full flex items-center justify-between px-3 py-2.5 text-sm transition-all duration-150 group"
+                    className="w-full flex items-center justify-between px-3 py-3 text-sm transition-all duration-150"
                     style={{ background: "transparent" }}
                     onMouseEnter={(e) => {
                       (e.currentTarget as HTMLButtonElement).style.background =
@@ -122,9 +123,8 @@ function EventDropdown({
                     }}
                   >
                     <span className="flex items-center gap-3">
-                      {/* Icon pill */}
                       <span
-                        className="w-8 h-8 rounded-lg flex items-center justify-center text-base shrink-0 transition-colors duration-150"
+                        className="w-8 h-8 rounded-lg flex items-center justify-center text-base shrink-0"
                         style={{
                           background:
                             isSelected ?
@@ -135,7 +135,6 @@ function EventDropdown({
                       >
                         {opt.icon}
                       </span>
-                      {/* Label */}
                       <span
                         style={{
                           color: isSelected ? "#FFC845" : "#8A7070",
@@ -145,8 +144,6 @@ function EventDropdown({
                         {opt.label}
                       </span>
                     </span>
-
-                    {/* Checkmark */}
                     <AnimatePresence>
                       {isSelected && (
                         <motion.span
@@ -217,10 +214,14 @@ export default function ContactSection() {
   const isLoading = formState === "loading";
 
   return (
-    <section id="contact" className="relative py-32 px-6 overflow-hidden">
+    <section
+      id="contact"
+      className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 overflow-hidden"
+    >
       {/* BG */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#1A0A14_0%,#0A0608_70%)]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 rounded-full bg-[#F5A623]/5 blur-[150px] pointer-events-none" />
+      {/* Fixed: was w-200 h-200 (invalid in Tailwind v3) */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(800px,100vw)] h-[min(800px,100vw)] rounded-full bg-[#F5A623]/5 blur-[150px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Section label */}
@@ -230,39 +231,46 @@ export default function ContactSection() {
           viewport={{ once: true }}
           className="flex items-center gap-4 mb-4"
         >
+          {/* Fixed: was max-w-15 (invalid in Tailwind v3) */}
           <div className="h-px flex-1 max-w-15 bg-linear-to-r from-transparent to-[#F5A623]/40" />
           <span className="text-[10px] tracking-[0.4em] uppercase text-[#F5A623]">
             Booking
           </span>
         </motion.div>
 
+        {/* Heading — clamp so it never overflows on small screens */}
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="text-4xl md:text-6xl font-bold mb-16"
-          style={{ fontFamily: "var(--font-display)", color: "#F8F0E8" }}
+          className="font-bold mb-10 sm:mb-16"
+          style={{
+            fontFamily: "var(--font-display)",
+            color: "#F8F0E8",
+            fontSize: "clamp(2rem, 8vw, 3.75rem)",
+            lineHeight: 1.1,
+          }}
         >
           Book DJ <span className="text-shimmer">Blaack</span>
         </motion.h2>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-12">
           {/* ── Left — contact info ── */}
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-6 sm:gap-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <p className="text-[#8A7070] leading-relaxed text-lg mb-8">
+              <p className="text-[#8A7070] leading-relaxed text-base sm:text-lg mb-6 sm:mb-8">
                 Ready to take your event to the next level? DJ Blaack brings
                 spirit-filled, high-energy gospel experiences to every stage.
                 From intimate ministry gatherings to large youth concerts —
                 let&apos;s make your event unforgettable.
               </p>
 
-              <div className="space-y-5">
+              <div className="space-y-4">
                 {[
                   {
                     icon: LuMapPin,
@@ -280,32 +288,36 @@ export default function ContactSection() {
                     value: "+234 810 489 5559",
                   },
                 ].map(({ icon: Icon, label, value }) => (
-                  <div key={label} className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-[#F5A623]/10 border border-[#F5A623]/20 flex items-center justify-center shrink-0">
-                      <Icon size={16} className="text-[#F5A623]" />
+                  <div key={label} className="flex items-center gap-3 sm:gap-4">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#F5A623]/10 border border-[#F5A623]/20 flex items-center justify-center shrink-0">
+                      <Icon size={15} className="text-[#F5A623]" />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-[10px] tracking-widest uppercase text-[#4A3A4A] mb-0.5">
                         {label}
                       </p>
-                      <p className="text-[#F8F0E8] text-sm">{value}</p>
+                      {/* break-all so a long email doesn't blow out the layout */}
+                      <p className="text-[#F8F0E8] text-sm break-all">
+                        {value}
+                      </p>
                     </div>
                   </div>
                 ))}
               </div>
             </motion.div>
 
-            {/* Socials */}
+            {/* Socials — wrap on small screens */}
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
             >
-              <p className="text-[10px] tracking-[0.4em] uppercase text-[#4A3A4A] mb-4">
+              <p className="text-[10px] tracking-[0.4em] uppercase text-[#4A3A4A] mb-3 sm:mb-4">
                 Follow the Journey
               </p>
-              <div className="flex gap-3">
+              {/* flex-wrap so all 3 fit on narrow screens */}
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 {[
                   {
                     icon: SiInstagram,
@@ -328,9 +340,9 @@ export default function ContactSection() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[#F5A623]/15 text-[#8A7070] hover:text-[#FFC845] hover:border-[#F5A623]/30 transition-all duration-300 text-xs tracking-widest uppercase"
+                    className="flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl border border-[#F5A623]/15 text-[#8A7070] hover:text-[#FFC845] hover:border-[#F5A623]/30 active:scale-95 transition-all duration-300 text-[10px] sm:text-xs tracking-widest uppercase"
                   >
-                    <Icon size={14} />
+                    <Icon size={13} />
                     {label}
                   </a>
                 ))}
@@ -343,13 +355,13 @@ export default function ContactSection() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
-              className="p-6 rounded-2xl"
+              className="p-5 sm:p-6 rounded-2xl"
               style={{
                 background: "rgba(245,166,35,0.05)",
                 border: "1px solid rgba(245,166,35,0.12)",
               }}
             >
-              <p className="text-[10px] tracking-[0.4em] uppercase text-[#F5A623] mb-4">
+              <p className="text-[10px] tracking-[0.4em] uppercase text-[#F5A623] mb-3 sm:mb-4">
                 Event Types
               </p>
               <div className="flex flex-wrap gap-2">
@@ -379,14 +391,15 @@ export default function ContactSection() {
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.9 }}
             onSubmit={handleSubmit}
-            className="flex flex-col gap-4 p-8 rounded-3xl"
+            className="flex flex-col gap-4 p-5 sm:p-8 rounded-3xl"
             style={{
               background: "rgba(18, 10, 16, 0.8)",
               border: "1px solid rgba(245,166,35,0.1)",
               backdropFilter: "blur(20px)",
             }}
           >
-            <div className="grid sm:grid-cols-2 gap-4">
+            {/* Name + Email — stacked on mobile, side-by-side from sm up */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-[10px] tracking-[0.3em] uppercase text-[#4A3A4A] mb-2">
                   Your Name
@@ -424,7 +437,7 @@ export default function ContactSection() {
               </div>
             </div>
 
-            {/* Custom dropdown */}
+            {/* Event type dropdown */}
             <div>
               <label className="block text-[10px] tracking-[0.3em] uppercase text-[#4A3A4A] mb-2">
                 Event Type
@@ -436,6 +449,7 @@ export default function ContactSection() {
               />
             </div>
 
+            {/* Message */}
             <div>
               <label className="block text-[10px] tracking-[0.3em] uppercase text-[#4A3A4A] mb-2">
                 Message
@@ -474,13 +488,13 @@ export default function ContactSection() {
               )}
             </AnimatePresence>
 
-            {/* Submit */}
+            {/* Submit button */}
             <motion.button
               type="submit"
               disabled={isLoading || !form.event}
               whileHover={!isLoading ? { scale: 1.02 } : {}}
-              whileTap={!isLoading ? { scale: 0.98 } : {}}
-              className="relative flex items-center justify-center gap-3 py-4 rounded-xl font-bold text-sm tracking-[0.2em] uppercase overflow-hidden disabled:cursor-not-allowed transition-all duration-300"
+              whileTap={!isLoading ? { scale: 0.97 } : {}}
+              className="relative flex items-center justify-center gap-3 py-4 rounded-xl font-bold text-sm tracking-[0.2em] uppercase overflow-hidden disabled:cursor-not-allowed transition-all duration-300 touch-manipulation"
               style={{
                 background:
                   formState === "success" ? "rgba(39,174,96,0.15)"
@@ -497,6 +511,8 @@ export default function ContactSection() {
                   : formState === "error" ? "1px solid rgba(231,76,60,0.3)"
                   : "none",
                 opacity: formState === "idle" && !form.event ? 0.45 : 1,
+                // Ensure tap target is at least 44px tall on mobile
+                minHeight: "48px",
               }}
             >
               {/* Shimmer sweep while loading */}
