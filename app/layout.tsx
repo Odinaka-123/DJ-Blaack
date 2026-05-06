@@ -2,33 +2,75 @@ import type { Metadata } from "next";
 import { Cinzel_Decorative, Raleway, Space_Mono } from "next/font/google";
 import "./globals.css";
 
-// 1. Setup optimized Google Fonts
-const cinzel = Cinzel_Decorative({ 
-  weight: ["400", "700", "900"], 
+const cinzel = Cinzel_Decorative({
+  weight: ["400", "700", "900"],
   subsets: ["latin"],
-  variable: "--font-display" 
+  variable: "--font-display",
 });
 
-const raleway = Raleway({ 
+const raleway = Raleway({
   subsets: ["latin"],
-  variable: "--font-body"
+  variable: "--font-body",
 });
 
-const spaceMono = Space_Mono({ 
+const spaceMono = Space_Mono({
   weight: ["400", "700"],
   subsets: ["latin"],
-  variable: "--font-mono"
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
-  title: "DJ Blaack | Gospel Disc Jockey",
+  metadataBase: new URL("https://yourdomain.com"), // 🔥 IMPORTANT
+
+  title: {
+    default: "DJ Blaack | Youngest Male Gospel DJ in Nigeria",
+    template: "%s | DJ Blaack",
+  },
+
   description:
-    "DJ Blaack — Nigeria's youngest male Gospel DJ. Spirit-filled sets, Afro-Gospel, and Christian Hip-Hop based in Lagos.",
-  keywords: ["DJ Blaack", "Gospel DJ", "Lagos", "Nigeria", "Afro-Gospel", "Christian Hip-Hop"],
+    "DJ Blaack is Nigeria's youngest male Gospel DJ based in Lagos. Experience spirit-filled Gospel, Afro-Gospel, and Christian Hip-Hop sets designed to inspire a generation.",
+
+  keywords: [
+    "DJ Blaack",
+    "Gospel DJ in Nigeria",
+    "Lagos DJ",
+    "Afro Gospel DJ",
+    "Christian Hip Hop DJ",
+    "Young Gospel DJ Nigeria",
+  ],
+
+  authors: [{ name: "DJ Blaack" }],
+
+  creator: "DJ Blaack",
+
   openGraph: {
-    title: "DJ Blaack | Gospel Disc Jockey",
-    description: "Spirit-filled sounds from Lagos, Nigeria's youngest male gospel DJ.",
+    title: "DJ Blaack | Youngest Male Gospel DJ in Nigeria",
+    description:
+      "Spirit-filled Gospel DJ from Lagos, Nigeria creating powerful musical experiences.",
+    url: "https://yourdomain.com",
+    siteName: "DJ Blaack Official",
     type: "website",
+    images: [
+      {
+        url: "https://yourdomain.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "DJ Blaack Gospel DJ Lagos",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "DJ Blaack | Gospel DJ in Nigeria",
+    description:
+      "Spirit-filled Gospel DJ from Lagos creating powerful musical experiences.",
+    images: ["https://yourdomain.com/og-image.jpg"],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -38,9 +80,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    // 2. Add the font variables to the html class
-    <html 
-      lang="en" 
+    <html
+      lang="en"
       className={`${cinzel.variable} ${raleway.variable} ${spaceMono.variable} scroll-smooth`}
     >
       <body className="antialiased">{children}</body>

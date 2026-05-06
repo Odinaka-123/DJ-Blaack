@@ -3,12 +3,25 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
-const stats = [
-  { value: 15, suffix: "", label: "Years Old" },
-  { value: 1, suffix: "st", label: "Youngest Male Gospel DJ in Nigeria" },
-  { value: 2025, suffix: "", label: "Professional Journey Started" },
-  { value: 100, suffix: "+", label: "Spirit-filled Sets" },
-];
+/** 🎂 Date of Birth */
+const DOB = new Date("2010-06-15");
+
+/** Calculate age dynamically */
+function getAge(dateOfBirth: Date) {
+  const today = new Date();
+  let age = today.getFullYear() - dateOfBirth.getFullYear();
+
+  const hasHadBirthdayThisYear =
+    today.getMonth() > dateOfBirth.getMonth() ||
+    (today.getMonth() === dateOfBirth.getMonth() &&
+      today.getDate() >= dateOfBirth.getDate());
+
+  if (!hasHadBirthdayThisYear) {
+    age--;
+  }
+
+  return age;
+}
 
 function AnimatedNumber({
   target,
@@ -28,18 +41,23 @@ function AnimatedNumber({
           started.current = true;
           let start = 0;
           const duration = 1800;
+
           const step = (timestamp: number) => {
             if (!start) start = timestamp;
             const progress = Math.min((timestamp - start) / duration, 1);
             const eased = 1 - Math.pow(1 - progress, 4);
+
             setCount(Math.floor(eased * target));
+
             if (progress < 1) requestAnimationFrame(step);
           };
+
           requestAnimationFrame(step);
         }
       },
       { threshold: 0.5 },
     );
+
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, [target]);
@@ -57,6 +75,13 @@ function AnimatedNumber({
 }
 
 export default function AboutSection() {
+  const stats = [
+    { value: getAge(DOB), suffix: "", label: "Years Old" },
+    { value: 1, suffix: "st", label: "Youngest Male Gospel DJ in Nigeria" },
+    { value: 2025, suffix: "", label: "Professional Journey Started" },
+    { value: 100, suffix: "+", label: "Spirit-filled Sets" },
+  ];
+
   return (
     <section id="about" className="relative py-32 px-6 overflow-hidden">
       {/* BG decoration */}
@@ -87,7 +112,10 @@ export default function AboutSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
               className="text-4xl md:text-6xl font-bold leading-[1.1] mb-8"
-              style={{ fontFamily: "var(--font-display)", color: "#F8F0E8" }}
+              style={{
+                fontFamily: "var(--font-display)",
+                color: "#F8F0E8",
+              }}
             >
               A New Voice for <span className="text-shimmer">Gospel Music</span>
             </motion.h2>
@@ -99,10 +127,10 @@ export default function AboutSection() {
               transition={{ delay: 0.2, duration: 0.8 }}
               className="text-[#8A7070] leading-relaxed text-lg mb-6"
             >
-              DJ Blaack is a dynamic 15-year-old Gospel DJ based in Lagos,
-              Nigeria — the youngest male DJ in the Nigerian gospel scene.
-              Dedicated to spreading the message of faith through high-energy,
-              spirit-filled musical experiences.
+              DJ Blaack is a dynamic young Gospel DJ based in Lagos, Nigeria —
+              the youngest male DJ in the Nigerian gospel scene. Dedicated to
+              spreading the message of faith through high-energy, spirit-filled
+              musical experiences.
             </motion.p>
 
             <motion.p
@@ -114,10 +142,7 @@ export default function AboutSection() {
             >
               Beginning his professional journey in 2025, DJ Blaack has quickly
               established a reputation for excellence, blending contemporary
-              gospel sounds with a vibrant, uplifting atmosphere. He specializes
-              in immersive sets for events, youth concerts, and ministry
-              gatherings — ensuring every performance resonates with purpose and
-              passion.
+              gospel sounds with a vibrant, uplifting atmosphere.
             </motion.p>
 
             {/* Mission statement */}
@@ -132,8 +157,8 @@ export default function AboutSection() {
                 className="text-lg italic text-[#F8F0E8]/80 leading-relaxed"
                 style={{ fontFamily: "var(--font-body)" }}
               >
-                &quot;To redefine the gospel entertainment landscape and inspire a
-                new generation through music.&quot;
+                &quot;To redefine the gospel entertainment landscape and inspire
+                a new generation through music.&quot;
               </p>
               <footer className="mt-3 text-xs tracking-[0.3em] uppercase text-[#F5A623]">
                 — Mission Statement
@@ -156,17 +181,17 @@ export default function AboutSection() {
                   border: "1px solid rgba(245, 166, 35, 0.12)",
                 }}
               >
-                {/* Hover glow */}
                 <div className="absolute inset-0 bg-linear-to-br from-[#F5A623]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 <AnimatedNumber target={s.value} suffix={s.suffix} />
+
                 <p className="mt-3 text-xs tracking-wide text-[#5A4A4A] leading-snug">
                   {s.label}
                 </p>
               </motion.div>
             ))}
 
-            {/* Signature style card spanning full width */}
+            {/* Signature style card */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -182,6 +207,7 @@ export default function AboutSection() {
               <p className="text-[10px] tracking-[0.4em] uppercase text-[#F5A623] mb-3">
                 Signature Style
               </p>
+
               <div className="flex flex-wrap gap-3">
                 {[
                   "Energetic Transitions",
